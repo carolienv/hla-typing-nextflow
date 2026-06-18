@@ -1,6 +1,7 @@
 nextflow.enable.dsl = 2
 
 include { EXTRACT_CHR6_BAM } from './modules/local/optitype/extract_chr6_bam'
+include { SUBSAMPLE_BAM } from './modules/local/optitype/subsample_bam'
 
 workflow {
 
@@ -19,4 +20,6 @@ workflow {
         }
 
     EXTRACT_CHR6_BAM(samples_ch)
+
+    SUBSAMPLE_BAM(EXTRACT_CHR6_BAM.out.chr6_bam)
 }
