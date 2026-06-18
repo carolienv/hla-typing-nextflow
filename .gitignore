@@ -1,3 +1,5 @@
+# Files and directories to ignore
+
 # Downloaded test data
 assets/test_data/
 
@@ -5,3 +7,12 @@ assets/test_data/
 logs/
 *.out
 *.err
+
+# Results
+results/
+results_*
+
+# Nextflow output
+work/
+.nextflow*
+.nextflow.log*
