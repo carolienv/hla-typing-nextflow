@@ -40,10 +40,5 @@ process EXTRACT_CHR6_BAM {
         -@ ${task.cpus} \\
         -bh "${bam}" "\$CHR" \\
         -o "${meta.sample_id}.chr6.bam"
-
-    # Index the extracted BAM for downstream use.
-    samtools index \\
-        -@ ${task.cpus} \\
-        "${meta.sample_id}.chr6.bam"
     """
 }
