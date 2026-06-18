@@ -9,7 +9,7 @@ process EXTRACT_CHR6_BAM {
     publishDir "${params.outdir}/preprocess/chr6_bam", mode: 'copy'
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
 
     output:
     tuple val(meta), path("${meta.sample_id}.chr6.bam"), emit: chr6_bam
@@ -20,6 +20,7 @@ process EXTRACT_CHR6_BAM {
 
     echo "Sample: ${meta.sample_id}"
     echo "Input BAM: ${bam}"
+    echo "Input BAI: ${bai}"
 
     # Detect whether chromosome 6 is called 'chr6' or '6' in the BAM index.
     IDX=\$(samtools idxstats "${bam}" | cut -f1)
