@@ -1,2 +1,7 @@
 # Downloaded test data
 assets/test_data/
+
+# Slurm logs
+logs/
+*.out
+*.err
