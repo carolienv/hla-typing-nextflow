@@ -120,6 +120,73 @@ process BAMTOFASTQ_10X {
     """
 }
 
-//process FISH_HLA_READS {
-//
-//}
+process ALIGN_HLA_READS {
+
+    tag "$meta.sample_id"
+
+    label 'process_medium'
+
+    container 'https://depot.galaxyproject.org/singularity/bwa:0.7.19--h577a1d6_1'
+
+    publishDir "${params.outdir}/preprocess/hla_alignment", mode: 'copy'
+
+    input:
+    tuple val(meta), path(r2_fastq)
+
+    output:
+    tuple val(meta), path("${meta.sample_id}.hla_aligned.sam"), emit: hla_aligned_sam
+
+    script:
+    """
+    set -euo pipefail
+
+    echo "Sample: ${meta.sample_id}"
+    echo "Input R2 FASTQ: ${r2_fastq}"
+    echo "HLA reference: ${params.refrna}"
+
+    if [ ! -f "${params.refrna}.bwt" ]; then
+        bwa index "${params.refrna}"
+    fi
+
+    bwa mem \\
+        -t ${task.cpus} \\
+        "${params.refrna}" \\
+        "${r2_fastq}" \\
+        > "${meta.sample_id}.hla_aligned.sam"
+    """
+}
+
+process EXTRACT_HLA_MAPPED_READS {
+
+    tag "$meta.sample_id"
+
+    label 'process_medium'
+
+    container 'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0'
+
+    publishDir "${params.outdir}/preprocess/hla_fished_fastq", mode: 'copy'
+
+    input:
+    tuple val(meta), path(hla_aligned_sam)
+
+    output:
+    tuple val(meta), path("${meta.sample_id}.fished.R2.fastq"), emit: hla_fished_fastq
+
+    script:
+    """
+    set -euo pipefail
+
+    echo "Sample: ${meta.sample_id}"
+    echo "Input HLA-aligned SAM: ${hla_aligned_sam}"
+
+    # Keep only reads that mapped to the HLA reference and write them as FASTQ.
+    samtools fastq \\
+        -@ ${task.cpus} \\
+        -F 4 \\
+        "${hla_aligned_sam}" \\
+        > "${meta.sample_id}.fished.R2.fastq"
+
+    echo "Number of HLA-fished reads:"
+    grep -c '^@' "${meta.sample_id}.fished.R2.fastq" || true
+    """
+}
