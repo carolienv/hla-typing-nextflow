@@ -120,6 +120,25 @@ process BAMTOFASTQ_10X {
     """
 }
 
+process PREPARE_OPTITYPE_REFERENCE {
+
+    label 'process_medium'
+
+    container 'https://depot.galaxyproject.org/singularity/optitype:1.5.0--pyhdfd78af_0'
+
+    publishDir "${params.outdir}/preprocess/reference", mode: 'copy'
+
+    output:
+    path "hla_reference_rna.fasta", emit: refrna
+
+    script:
+    """
+    set -euo pipefail
+
+    cp /usr/local/share/optitype/data/hla_reference_rna.fasta hla_reference_rna.fasta
+    """
+}
+
 process ALIGN_HLA_READS {
 
     tag "$meta.sample_id"
@@ -132,6 +151,7 @@ process ALIGN_HLA_READS {
 
     input:
     tuple val(meta), path(r2_fastq)
+    path refrna
 
     output:
     tuple val(meta), path("${meta.sample_id}.hla_aligned.sam"), emit: hla_aligned_sam
@@ -142,15 +162,13 @@ process ALIGN_HLA_READS {
 
     echo "Sample: ${meta.sample_id}"
     echo "Input R2 FASTQ: ${r2_fastq}"
-    echo "HLA reference: ${params.refrna}"
+    echo "HLA reference: ${refrna}"
 
-    if [ ! -f "${params.refrna}.bwt" ]; then
-        bwa index "${params.refrna}"
-    fi
+    bwa index "${refrna}"
 
     bwa mem \\
         -t ${task.cpus} \\
-        "${params.refrna}" \\
+        "${refrna}" \\
         "${r2_fastq}" \\
         > "${meta.sample_id}.hla_aligned.sam"
     """
