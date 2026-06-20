@@ -1,6 +1,6 @@
 nextflow.enable.dsl = 2
 
-include { OPTITYPE_HLATYPING } from './subworkflows/optitype_hlatyping'
+include { HLA_TYPING } from './workflows/hla_typing'
 
 
 workflow {
@@ -42,5 +42,5 @@ workflow {
             tuple(row, file(row.bam), file("${row.bam}.bai"))
         }
 
-    OPTITYPE_HLATYPING(samples_ch)
+    HLA_TYPING(samples_ch)
 }
