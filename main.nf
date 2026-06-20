@@ -10,6 +10,8 @@ include {
 } from './modules/local/optitype/preprocessing'
 
 include { RUN_OPTITYPE } from './modules/local/optitype/optitype'
+
+include { COLLECT_OPTITYPE_RESULTS } from './modules/local/optitype/postprocessing'
 workflow {
 
     samples_ch = Channel
@@ -42,6 +44,12 @@ workflow {
     )
 
     RUN_OPTITYPE(
-    EXTRACT_HLA_MAPPED_READS.out.hla_fished_fastq
+        EXTRACT_HLA_MAPPED_READS.out.hla_fished_fastq
     )
+
+    optitype_results_ch = RUN_OPTITYPE.out.optitype_result
+        .map { meta, result_tsv -> result_tsv }
+        .collect()
+
+    COLLECT_OPTITYPE_RESULTS(optitype_results_ch)
 }

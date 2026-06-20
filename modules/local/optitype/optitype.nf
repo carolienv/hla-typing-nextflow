@@ -12,7 +12,7 @@ process RUN_OPTITYPE {
     tuple val(meta), path(fished_fastq)
 
     output:
-    tuple val(meta), path("${meta.sample_id}_optitype"), emit: optitype_result_dir
+    tuple val(meta), path("${meta.sample_id}_result.tsv"), emit: optitype_result
 
     script:
     """
@@ -21,12 +21,10 @@ process RUN_OPTITYPE {
     echo "Sample: ${meta.sample_id}"
     echo "Input fished FASTQ: ${fished_fastq}"
 
-    mkdir -p "${meta.sample_id}_optitype"
-
     optitype run \\
         -i "${fished_fastq}" \\
         --rna \\
-        -o "${meta.sample_id}_optitype" \\
+        -o . \\
         --prefix "${meta.sample_id}"
     """
 }
