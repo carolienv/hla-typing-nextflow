@@ -76,7 +76,9 @@ nextflow run main.nf \
   -profile apptainer
 ```
 
-On the training HPC, the `apptainer` profile enables Apptainer and uses the configured Apptainer cache directory.
+The `apptainer` profile enables Apptainer and uses the cache directory configured in `conf/apptainer.config`.
+
+The current default executor is Slurm, as configured in `conf/base.config`. Users running outside a Slurm-based HPC environment may need to adapt this configuration.
 
 ## Outputs
 
@@ -116,6 +118,31 @@ and one OptiType result file per sample:
 
 ```text
 <sample_id>_result.tsv
+```
+
+## Configuration profiles
+
+The main `nextflow.config` file loads additional configuration files from the `conf/` directory.
+
+Current configuration files:
+
+| File | Description |
+|---|---|
+| `conf/base.config` | Default parameters and process resource settings |
+| `conf/test.config` | Test input, test output directory, and automatic test-data preparation |
+| `conf/apptainer.config` | Apptainer settings and cache directory |
+
+Available profiles:
+
+| Profile | Description |
+|---|---|
+| `test` | Uses the test samplesheet, writes to `results_test/`, and prepares test data automatically |
+| `apptainer` | Enables Apptainer and sets the Apptainer cache directory |
+
+Profiles can be combined:
+
+```bash
+nextflow run main.nf -profile test,apptainer
 ```
 
 ## Documentation
