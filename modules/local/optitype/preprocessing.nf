@@ -80,10 +80,46 @@ process SUBSAMPLE_BAM {
     """
 }
 
-process BAMTOFASTQ {
+process BAMTOFASTQ_10X {
 
+    tag "$meta.sample_id"
+
+    label 'process_medium'
+
+    container 'https://depot.galaxyproject.org/singularity/10x_bamtofastq:1.4.1--h3ab6199_4'
+
+    publishDir "${params.outdir}/preprocess/r2_fastq", mode: 'copy'
+
+    input:
+    tuple val(meta), path(bam)
+
+    output:
+    tuple val(meta), path("${meta.sample_id}.R2.fastq.gz"), emit: r2_fastq
+
+    script:
+    """
+    set -euo pipefail
+
+    echo "Sample: ${meta.sample_id}"
+    echo "Input BAM: ${bam}"
+
+    FASTQDIR="${meta.sample_id}_bamtofastq"
+
+    # Convert 10X BAM to FASTQ.
+    bamtofastq "${bam}" "\${FASTQDIR}"
+
+    # Collect all R2 FASTQ files into one file.
+    # R1 contains cell barcode / UMI information.
+    # R2 contains the cDNA sequence used for HLA read fishing.
+    find "\${FASTQDIR}" -name "*_R2_001.fastq.gz" -print0 | \\
+        sort -z | \\
+        xargs -0 cat > "${meta.sample_id}.R2.fastq.gz"
+
+    echo "Number of R2 reads:"
+    zgrep -c '^@' "${meta.sample_id}.R2.fastq.gz" || true
+    """
 }
 
-process FISH_HLA_READS {
-
-}
+//process FISH_HLA_READS {
+//
+//}
