@@ -118,6 +118,14 @@ and one OptiType result file per sample:
 <sample_id>_result.tsv
 ```
 
+## Documentation
+
+Additional documentation:
+
+- [`docs/workflow_overview.md`](docs/workflow_overview.md): high-level workflow structure
+- [`docs/optitype_workflow.md`](docs/optitype_workflow.md): OptiType-specific workflow details
+- [`docs/test_data.md`](docs/test_data.md): test-data download and symlinked second sample
+
 ## Citations
 
 Please see [`CITATIONS.md`](CITATIONS.md) for software and data citations.
