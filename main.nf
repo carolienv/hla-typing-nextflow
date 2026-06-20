@@ -8,6 +8,8 @@ include {
     ALIGN_HLA_READS
     EXTRACT_HLA_MAPPED_READS
 } from './modules/local/optitype/preprocessing'
+
+include { RUN_OPTITYPE } from './modules/local/optitype/optitype'
 workflow {
 
     samples_ch = Channel
@@ -37,5 +39,9 @@ workflow {
 
     EXTRACT_HLA_MAPPED_READS(
         ALIGN_HLA_READS.out.hla_aligned_sam
+    )
+
+    RUN_OPTITYPE(
+    EXTRACT_HLA_MAPPED_READS.out.hla_fished_fastq
     )
 }
