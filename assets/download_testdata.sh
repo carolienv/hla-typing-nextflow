@@ -1,10 +1,4 @@
 #!/usr/bin/env bash
-#SBATCH --job-name=download_testdata
-#SBATCH --output=logs/%x_%j.out
-#SBATCH --error=logs/%x_%j.err
-#SBATCH --cpus-per-task=1
-#SBATCH --mem=2G
-#SBATCH --time=04:00:00
 
 set -euo pipefail
 
