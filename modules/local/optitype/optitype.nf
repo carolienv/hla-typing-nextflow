@@ -1,6 +1,6 @@
 process RUN_OPTITYPE {
 
-    tag "$meta.sample_id"
+    tag "${meta.sample_id}"
 
     label 'process_high'
 

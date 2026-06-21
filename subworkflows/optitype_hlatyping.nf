@@ -1,11 +1,11 @@
 nextflow.enable.dsl = 2
 
 include {
-    EXTRACT_CHR6_BAM
-    SUBSAMPLE_BAM
-    BAMTOFASTQ_10X
-    PREPARE_OPTITYPE_REFERENCE
-    ALIGN_HLA_READS
+    EXTRACT_CHR6_BAM ;
+    SUBSAMPLE_BAM ;
+    BAMTOFASTQ_10X ;
+    PREPARE_OPTITYPE_REFERENCE ;
+    ALIGN_HLA_READS ;
     EXTRACT_HLA_MAPPED_READS
 } from '../modules/local/optitype/preprocessing'
 
@@ -15,7 +15,6 @@ include { COLLECT_OPTITYPE_RESULTS } from '../modules/local/optitype/postprocess
 
 
 workflow OPTITYPE_HLATYPING {
-
     take:
     samples_ch
 
@@ -28,7 +27,7 @@ workflow OPTITYPE_HLATYPING {
 
     ALIGN_HLA_READS(
         BAMTOFASTQ_10X.out.r2_fastq,
-        PREPARE_OPTITYPE_REFERENCE.out.refrna
+        PREPARE_OPTITYPE_REFERENCE.out.refrna,
     )
 
     EXTRACT_HLA_MAPPED_READS(

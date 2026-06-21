@@ -4,7 +4,6 @@ include { OPTITYPE_HLATYPING } from '../subworkflows/optitype_hlatyping'
 
 
 workflow HLA_TYPING {
-
     take:
     samples_ch
 

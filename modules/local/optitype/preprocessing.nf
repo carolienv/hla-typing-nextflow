@@ -1,12 +1,12 @@
 // Process to reads aligned to chromosome 6
 process EXTRACT_CHR6_BAM {
 
-    tag "$meta.sample_id"
+    tag "${meta.sample_id}"
 
     label 'process_medium'
 
     container 'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0'
-    
+
     publishDir "${params.outdir}/preprocess/chr6_bam", mode: 'copy'
 
     input:
@@ -47,7 +47,7 @@ process EXTRACT_CHR6_BAM {
 
 process SUBSAMPLE_BAM {
 
-    tag "$meta.sample_id"
+    tag "${meta.sample_id}"
 
     label 'process_medium'
 
@@ -82,7 +82,7 @@ process SUBSAMPLE_BAM {
 
 process BAMTOFASTQ_10X {
 
-    tag "$meta.sample_id"
+    tag "${meta.sample_id}"
 
     label 'process_medium'
 
@@ -141,7 +141,7 @@ process PREPARE_OPTITYPE_REFERENCE {
 
 process ALIGN_HLA_READS {
 
-    tag "$meta.sample_id"
+    tag "${meta.sample_id}"
 
     label 'process_medium'
 
@@ -176,7 +176,7 @@ process ALIGN_HLA_READS {
 
 process EXTRACT_HLA_MAPPED_READS {
 
-    tag "$meta.sample_id"
+    tag "${meta.sample_id}"
 
     label 'process_medium'
 
