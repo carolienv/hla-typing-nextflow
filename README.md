@@ -70,9 +70,9 @@ the pipeline expects the index file to be:
 Prepare a samplesheet and run:
 
 ```bash
-nextflow run main.nf \
-  --input samplesheet.csv \
-  --outdir results \
+nextflow run carolienv/hla-typing-nextflow \
+  --input "$PWD/samplesheet.csv" \
+  --outdir "$PWD/results" \
   -profile apptainer
 ```
 
