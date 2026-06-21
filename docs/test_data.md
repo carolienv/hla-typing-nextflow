@@ -5,7 +5,7 @@ The test profile uses a public 10X Genomics 5' single-cell RNA-seq BAM file to t
 The test data are prepared automatically when running:
 
 ```bash
-nextflow run main.nf -profile test,apptainer
+nextflow run carolienv/hla-typing-nextflow -profile test,apptainer
 ```
 
 ## Downloaded files

@@ -19,7 +19,7 @@ The pipeline includes a test profile that automatically downloads a public 10X G
 Run the test with:
 
 ```bash
-nextflow run main.nf -profile test,apptainer
+nextflow run carolienv/hla-typing-nextflow -profile test,apptainer
 ```
 
 ## Requirements
